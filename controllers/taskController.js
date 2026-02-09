@@ -125,7 +125,13 @@ const updateTask = async (req, res) => {
         }
 
         const updateData = { ...req.body };
-        if (updateData.managerReply) {
+
+        // Check if manager is updating the reply
+        if (updateData.managerReply !== undefined) {
+            // If there was an old reply and it's different, mark as edited
+            if (task.managerReply && task.managerReply !== updateData.managerReply) {
+                updateData.isFeedbackEdited = true;
+            }
             updateData.managerReplyAt = new Date();
         }
 

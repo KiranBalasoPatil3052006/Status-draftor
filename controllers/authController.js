@@ -82,4 +82,28 @@ const getAllEmployees = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, authUser, getAllEmployees };
+// @desc    Delete user
+// @route   DELETE /api/auth/:id
+// @access  Private/Admin
+const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (user) {
+            // Optional: Delete user's tasks as well? 
+            // For now, let's keep it simple and just delete the user. 
+            // Tasks will effectively be orphaned or we can cascade delete.
+            // Let's cascade delete for cleanliness.
+            await require('../models/Task').deleteMany({ user: user._id });
+
+            await user.deleteOne();
+            res.json({ message: 'User removed' });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { registerUser, authUser, getAllEmployees, deleteUser };

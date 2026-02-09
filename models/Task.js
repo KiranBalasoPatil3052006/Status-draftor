@@ -36,6 +36,10 @@ const taskSchema = mongoose.Schema({
     isAssigned: {
         type: Boolean,
         default: false
+    },
+    isFeedbackEdited: {
+        type: Boolean,
+        default: false
     }
     // We strictly track when it was created and last updated
 }, {
