@@ -27,4 +27,10 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Export for Vercel (Serverless)
+module.exports = app;
+
+// Only listen if running directly (Local Development)
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
